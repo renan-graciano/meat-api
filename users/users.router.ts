@@ -7,7 +7,7 @@ class UsersRouter extends Router{
 
     application.get('/users', (req, resp, next) => {
       //resp.json({message: 'users router'})
-      User.findAll().then(users => {
+      User.find().then(users => {
         resp.json(users)
         return next()
       })

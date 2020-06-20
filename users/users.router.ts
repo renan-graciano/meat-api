@@ -1,6 +1,7 @@
 import { Router } from '../common/router'
 import * as restify from 'restify'
 import {User} from '../users/users.model'
+import { networkInterfaces } from 'os';
 
 class UsersRouter extends Router{
   applyRoutes(application: restify.Server) {
@@ -22,6 +23,30 @@ class UsersRouter extends Router{
         resp.send(404)
         return next()
       })
+    })
+
+    application.post('/users', (req, resp, next) => {
+      let user = new User(req.body)
+      user.save().then(user => {
+        resp.json(user)
+        return next()
+      })
+    })
+
+    application.put('/users/:id', (req, resp, next) => {
+      const options = {overwrite: true}
+      User.update({ _id: req.params.id }, req.body, options)
+        .exec().then(result => {
+          if (result.n) {
+            return User.findById(req.params.id)
+          }
+          else {
+            resp.send(404)
+          }
+        }).then(user => {
+          resp.json(user)
+          return next()
+        })
     })
   }
 }

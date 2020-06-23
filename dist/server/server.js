@@ -4,6 +4,7 @@ exports.Server = void 0;
 const restify = require("restify");
 const mongoose = require("mongoose");
 const environment_1 = require("../common/environment");
+const merge_patch_parser_1 = require("./merge-patch.parser");
 class Server {
     initializeDb() {
         mongoose.Promise = global.Promise;
@@ -20,6 +21,7 @@ class Server {
                 });
                 this.application.use(restify.plugins.queryParser());
                 this.application.use(restify.plugins.bodyParser());
+                this.application.use(merge_patch_parser_1.mergePatchBodyParser);
                 //routes
                 for (let router of routers) {
                     router.applyRoutes(this.application);

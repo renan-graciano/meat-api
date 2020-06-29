@@ -2,13 +2,33 @@
   "name": "meat-api",
   "version": "1.0.0",
   "description": "API de Restaurantes",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ts-node jest.startup.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "jest": {
+    "globals":{
+      "address":"http://localhost:3001"
+    },
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "\\.(css)$": "jest-css-modules"
+    },
+    "transform": {
+      "\\.(ts|tsx?)$": "ts-jest"
+    },
+    "testRegex": ".test.(ts|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  },
   "dependencies": {
     "bcrypt": "5.0.0",
     "mongoose": "5.7.5",
@@ -20,8 +40,16 @@
   },
   "devDependencies": {
     "@types/bcrypt": "3.0.0",
+    "@types/jest": "^26.0.3",
     "@types/mongoose": "4.7.32",
     "@types/restify": "5.0.6",
-    "@types/restify-errors": "^4.3.3"
+    "@types/restify-errors": "^4.3.3",
+    "@types/supertest": "^2.0.9",
+    "jest": "^26.1.0",
+    "jest-cli": "^26.1.0",
+    "supertest": "^4.0.2",
+    "ts-jest": "^26.1.1",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.5"
   }
 }

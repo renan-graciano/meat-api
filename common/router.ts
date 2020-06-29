@@ -20,7 +20,7 @@ export abstract class Router extends EventEmitter {
       } else {
         throw new NotFoundError('Documento não encontrado.')
       }
-      return next()
+      return next(false)
     }
   }
   renderAll(response: restify.Response, next: restify.Next, options: any ={}) {
@@ -34,7 +34,7 @@ export abstract class Router extends EventEmitter {
       }else{
         response.json(this.envelopeAll([]))
       }
-      return next()
+      return next(false)
     }
   }
 }

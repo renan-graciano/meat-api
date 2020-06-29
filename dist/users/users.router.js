@@ -9,14 +9,11 @@ class UsersRouter extends model_router_1.ModelRouter {
         this.findByEmail = (req, resp, next) => {
             if (req.query.email) {
                 users_model_1.User.findByEmail(req.query.email)
-                    .then(user => {
-                    if (user) {
-                        return [user];
-                    }
-                    else {
-                        return [];
-                    }
-                }).then(this.renderAll(resp, next))
+                    .then(user => user ? [user] : [])
+                    .then(this.renderAll(resp, next, {
+                    pageSize: this.pageSize,
+                    url: req.url
+                }))
                     .catch(next);
             }
             else {

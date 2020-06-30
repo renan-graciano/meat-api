@@ -3,19 +3,23 @@ import * as request from 'supertest'
 import { Server } from '../server/server'
 import { environment } from '../common/environment'
 
-let address: string = (<any>global).address
+const address: string = (<any>global).address
+const auth: string = (<any>global).auth
 
 test('teste get /users', () => {
   return request(address)
     .get('/users')
+    .set('Authorization', auth)
     .then(response => {
       expect(response.status).toBe(200)
       expect(response.body.items).toBeInstanceOf(Array)  
   }).catch(fail)
 })
+
 test('teste post /users', () => {
   return request(address)
     .post('/users')
+    .set('Authorization', auth)
     .send({
       name: 'Roberto',
       email: 'roberto@email.com',
@@ -35,6 +39,7 @@ test('teste post /users', () => {
 test('get /users/aaa - not found', () => {
   return request(address)
     .get('/users/aaa')
+    .set('Authorization', auth)
     .then(response => {
       expect(response.status).toBe(404)
   }).catch(fail)
@@ -43,6 +48,7 @@ test('get /users/aaa - not found', () => {
 test('teste patch /users/:id', () => {
   return request(address)
     .post('/users')
+    .set('Authorization', auth)
     .send({
       name: 'Mario',
       email: 'mario@email.com',
@@ -50,6 +56,7 @@ test('teste patch /users/:id', () => {
     })
     .then(response => request(address)
       .patch(`/users/${response.body._id}`)
+      .set('Authorization', auth)
       .send({
       name:'Ricardo Mario'
     }))

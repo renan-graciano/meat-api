@@ -4,7 +4,8 @@ import { environment } from '../common/environment'
 import * as mongoose from 'mongoose';
 import {Menu} from './restaurants.model'
 
-let address: string = (<any>global).address
+const address: string = (<any>global).address
+const auth: string = (<any>global).auth
 
 test('teste get /restaurants', () => {
   return request(address)
@@ -28,6 +29,7 @@ test('teste get /restaurants/aaaa', () => {
 test('test post /restaurants', () => {
   return request(address)
     .post('/restaurants')
+    .set('Authorization', auth)
     .send({
     name: "test post restaurants"
     }).then(response => {
@@ -39,11 +41,13 @@ test('test post /restaurants', () => {
 test('teste post menu restaurant /restaurant/:id/menu', () => {
   return request(address)
     .post('/restaurants')
+    .set('Authorization', auth)
     .send({
     name:'test post menu restaurant'
     })
     .then(response => request(address)
       .put(`/restaurants/${response.body._id}/menu`)
+      .set('Authorization', auth)
       .send({
         name: 'test post menu restaurant 1',
         price: 12
@@ -57,13 +61,15 @@ test('teste get menu restaurant /restaurant/:id/menu', () => {
   let rest = mongoose.Types.ObjectId
   return request(address)
     .post('/restaurants')
+    .set('Authorization', auth)
     .send({
     name:'test get menu restaurant'
     })
     .then(response => {
       rest = response.body._id
       request(address)
-      .put(`/restaurants/${rest}/menu`)
+        .put(`/restaurants/${rest}/menu`)
+        .set('Authorization', auth)  
       .send({
         name: 'test get menu restaurant 1',
         price: 11

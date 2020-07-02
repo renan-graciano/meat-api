@@ -2,19 +2,20 @@ import {ModelRouter} from '../common/model-router'
 import * as restify from 'restify'
 import { Review, IReview } from '../reviews/reviews.model'
 import * as mongoose from 'mongoose'
+import { authorize } from '../security/authz.handler';
 
 class ReviewsRouter extends ModelRouter<IReview>{
   constructor() {
     super(Review)
   }
 
-  protected prepareOne(query: mongoose.DocumentQuery<IReview, IReview>): mongoose.DocumentQuery<IReview, IReview>{
+  protected prepareOne(query: mongoose.DocumentQuery<IReview, IReview>): mongoose.DocumentQuery<IReview, IReview> {
     return query.populate('user', 'name')
       .populate('restaurant', 'name')
-  } 
-  protected prepareAll(query: mongoose.DocumentQuery<IReview[], IReview>): mongoose.DocumentQuery<IReview[], IReview>{
+  }
+  protected prepareAll(query: mongoose.DocumentQuery<IReview[], IReview>): mongoose.DocumentQuery<IReview[], IReview> {
     return query.populate('user', 'name')
-    .populate('restaurant', 'name')
+      .populate('restaurant', 'name')
   }
   envelope(document) {
     let resource = super.envelope(document)
@@ -32,8 +33,8 @@ class ReviewsRouter extends ModelRouter<IReview>{
 
   applyRoutes(application: restify.Server) {
     application.get(`${this.basePath}`, this.findAll)
-    application.get(`${this.basePath}/:id`, [this.validateId,this.findById])
-    application.post(`${this.basePath}`,this.save)
+    application.get(`${this.basePath}/:id`, [this.validateId, this.findById])
+    application.post(`${this.basePath}`, [authorize('user','admin'), this.save])
   }
 }
 

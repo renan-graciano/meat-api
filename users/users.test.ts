@@ -2,24 +2,29 @@ import 'jest'
 import * as request from 'supertest'
 import { Server } from '../server/server'
 import { environment } from '../common/environment'
+import { response } from 'spdy';
 
-let address: string = (<any>global).address
+const address: string = (<any>global).address
+const auth: string = (<any>global).auth
 
 test('teste get /users', () => {
   return request(address)
     .get('/users')
+    .set('Authorization', auth)
     .then(response => {
       expect(response.status).toBe(200)
       expect(response.body.items).toBeInstanceOf(Array)  
   }).catch(fail)
 })
+
 test('teste post /users', () => {
   return request(address)
     .post('/users')
+    .set('Authorization', auth)
     .send({
       name: 'Roberto',
       email: 'roberto@email.com',
-      password: '123455',
+      password: '123456',
       cpf: '581.230.550-13'
     })
     .then(response => {
@@ -35,6 +40,7 @@ test('teste post /users', () => {
 test('get /users/aaa - not found', () => {
   return request(address)
     .get('/users/aaa')
+    .set('Authorization', auth)
     .then(response => {
       expect(response.status).toBe(404)
   }).catch(fail)
@@ -43,6 +49,7 @@ test('get /users/aaa - not found', () => {
 test('teste patch /users/:id', () => {
   return request(address)
     .post('/users')
+    .set('Authorization', auth)
     .send({
       name: 'Mario',
       email: 'mario@email.com',
@@ -50,6 +57,7 @@ test('teste patch /users/:id', () => {
     })
     .then(response => request(address)
       .patch(`/users/${response.body._id}`)
+      .set('Authorization', auth)
       .send({
       name:'Ricardo Mario'
     }))
@@ -61,4 +69,32 @@ test('teste patch /users/:id', () => {
       expect(response.body.password).toBeUndefined()
     })
     .catch(fail)
+})
+
+test('teste autenticacao /users/authenticate', () => {
+  return request(address)
+    .post('/users/authenticate')
+    .send({
+      email: 'roberto@email.com',
+      password: "123456"    
+    })
+    .then(response => {
+      expect(response.status).toBe(200)
+      expect(response.body.accessToken).toBeDefined()
+    expect(response.body.email).toBe('roberto@email.com')  
+  })
+})
+
+test('teste autenticacao errada /users/authenticate', () => {
+  return request(address)
+    .post('/users/authenticate')
+    .send({
+      email: 'bruce@dc.com',
+      password: "batmant"    
+    })
+    .then(response => {
+      expect(response.status).toBe(403)
+      expect(response.body.message).toBeDefined()
+    expect(response.body.message).toBe('Invalid credentials')  
+  })
 })

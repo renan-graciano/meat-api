@@ -1,11 +1,14 @@
+import * as fs from 'fs'
 import * as restify from 'restify'
 import * as mongoose from 'mongoose'
 import { environment } from '../common/environment'
 import { Router } from '../common/router'
 import { mergePatchBodyParser } from './merge-patch.parser'
-import {handleError} from './error.handler'
+import { handleError } from './error.handler'
+import { tokenParser } from '../security/token.parser'
 
-export class Server{
+
+export class Server {
  
   application: restify.Server
   initializeDb(): mongoose.MongooseThenable {
@@ -13,18 +16,25 @@ export class Server{
     return mongoose.connect(environment.db.url)
   }
 
-  initRoutes(routers: Router[] = []): Promise<any>{
-    return new Promise((resolve, reject)=> {
+  initRoutes(routers: Router[] = []): Promise<any> {
+    return new Promise((resolve, reject) => {
       try {
-        this.application = restify.createServer({
+        const options: restify.ServerOptions = {
           name: 'meat-api',
-          version: '1.0.0'
-        })
+          version: '1.0.0',
+        }
+        if (environment.security.enableHTTPS) {
+          options.certificate = fs.readFileSync(environment.security.certificate)
+          options.key = fs.readFileSync(environment.security.key)
+        }
+
+        this.application = restify.createServer(options)
         
         this.application.use(restify.plugins.queryParser())
         this.application.use(restify.plugins.bodyParser())
         this.application.use(mergePatchBodyParser)
-//routes
+        this.application.use(tokenParser)
+        //routes
         for (let router of routers) {
           router.applyRoutes(this.application)
         }
@@ -41,9 +51,9 @@ export class Server{
     })
   }
 
-  bootstrap(routers: Router[] = []): Promise<Server>{
-    return this.initializeDb().then(() => 
-      this.initRoutes(routers).then(()=> this))
+  bootstrap(routers: Router[] = []): Promise<Server> {
+    return this.initializeDb().then(() =>
+      this.initRoutes(routers).then(() => this))
   }
 
   shudown() {

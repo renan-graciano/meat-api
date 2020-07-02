@@ -4,7 +4,8 @@ import { environment } from '../common/environment'
 import * as mongoose from 'mongoose';
 
 
-let address: string = (<any>global).address
+const address: string = (<any>global).address
+const auth: string = (<any>global).auth
 
 test('teste get /reviews', () => {
   return request(address)
@@ -30,6 +31,7 @@ test('teste post /reviews', () => {
   let restaurant  = mongoose.Types.ObjectId
   return request(address)
     .post('/users')
+    .set('Authorization', auth)
     .send({
         name: 'teste review post User',
         email: 'testeReviewPostUser@email.com',

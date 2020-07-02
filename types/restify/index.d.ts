@@ -1,4 +1,4 @@
-import { User, IUser } from "./users/users.model";
+import { User, IUser } from "../../users/users.model";
 
 
 declare module 'restify' {

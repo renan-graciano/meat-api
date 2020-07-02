@@ -2,7 +2,6 @@
   "name": "meat-api",
   "version": "1.0.0",
   "description": "API de Restaurantes",
-  "main": "index.ts",
   "scripts": {
     "test": "ts-node jest.startup.ts"
   },
@@ -16,8 +15,11 @@
     },
     "testEnvironment": "node",
     "moduleNameMapper": {
-      "\\.(css)$": "jest-css-modules"
+      "\\.(css)$": "jest-css-modules",
+      "/typings/(.*)":"<rootDir>/typings/$1"
     },
+    "modulePaths":["/typings/restify"],
+    "moduleDirectories":["node_modules","typings"],
     "transform": {
       "\\.(ts|tsx?)$": "ts-jest"
     },

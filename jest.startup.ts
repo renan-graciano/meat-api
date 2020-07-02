@@ -1,6 +1,6 @@
 import { Server } from "./server/server";
 import { environment } from "./common/environment";
-import { User } from "./users/users.model";
+import { User, IUser } from "./users/users.model";
 import { usersRouter } from "./users/users.router";
 import { reviewsRouter } from "./reviews/reviews.router";
 import { restaurantsRouter } from "./restaurants/restaurants.router";

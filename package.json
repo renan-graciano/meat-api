@@ -16,10 +16,15 @@
     "testEnvironment": "node",
     "moduleNameMapper": {
       "\\.(css)$": "jest-css-modules",
-      "/typings/(.*)":"<rootDir>/typings/$1"
+      "/typings/(.*)": "<rootDir>/typings/$1"
     },
-    "modulePaths":["/typings/restify"],
-    "moduleDirectories":["node_modules","typings"],
+    "modulePaths": [
+      "/typings/restify"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "typings"
+    ],
     "transform": {
       "\\.(ts|tsx?)$": "ts-jest"
     },

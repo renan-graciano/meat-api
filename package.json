@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "API de Restaurantes",
   "scripts": {
+    "build": "tsc",
     "test": "ts-node jest.startup.ts"
   },
   "keywords": [],

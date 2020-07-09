@@ -16,13 +16,13 @@ jobs:
     - uses: actions/checkout@v2
     - name: Docker image
       uses: docker://beevelop/nodejs-python
-    - run: npm install
-    - run: npm test
     services:
       mongodb:
        image: mongo:4.2.8
        ports:
         - 27017:27017
+    - run: npm install
+    - run: npm test
     env:
       SERVER_PORT: 3001
       DB_URL: "mongodb://mongo/meatapi"

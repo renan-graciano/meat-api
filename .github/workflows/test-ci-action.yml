@@ -39,4 +39,4 @@ jobs:
       env:
         CI: true
         SERVER_PORT: 3001
-        DB_URL: "mongodb://localhost:27017/meatapi"
+        DB_URL: "mongodb://localhost/meatapi"

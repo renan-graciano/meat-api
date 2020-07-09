@@ -45,7 +45,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Docker image
-      uses: docker://rastasheep/ubuntu-sshd
+      uses: docker://rastasheep/ubuntu-sshd:14.04
     - name: Before deploy
       env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}

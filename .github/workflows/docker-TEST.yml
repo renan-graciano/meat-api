@@ -40,6 +40,8 @@ jobs:
 
     runs-on: ubuntu-16.04
 
+    needs: test
+
     steps:
     - uses: actions/checkout@v2
     - name: Docker image
@@ -58,4 +60,5 @@ jobs:
     - name: Deploy new version
       env:
         DEPLOY_SERVER: ${{ secrets.DEPLOY_SERVER }}
-      run: ssh deploy@$DEPLOY_SERVER "source ~/.nvm/nvm.sh; cd meat-api; git pull; npm i; npm run build; cd; pm2 startOrReload ecosystem.config.js"
+      run: |
+        ssh deploy@$DEPLOY_SERVER "source ~/.nvm/nvm.sh; cd meat-api; git pull; npm i; npm run build; cd; pm2 startOrReload ecosystem.config.js"

@@ -35,8 +35,6 @@ jobs:
     - name: Create mongoDB Docker container for API testing
       uses: DigiPie/mongo-action@v1.0.0
     - run: npm install
-    - name: Run `npm run compile` to compile Typescript into Javascript
-      run: npm run compile
     - run: npm test
       env:
         CI: true

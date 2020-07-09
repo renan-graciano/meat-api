@@ -40,7 +40,4 @@ const afterAllTests = () => {
 beforeAllTests()
   .then(() => jestCli.run())
   .then(() => afterAllTests())
-  .catch(error => {
-    console.error(error)
-    process.exit(1)
-  })
+  .catch(console.error)

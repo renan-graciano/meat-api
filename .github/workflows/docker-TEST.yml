@@ -38,12 +38,11 @@ jobs:
 
     runs-on: ubuntu-16.04
 
-    needs: test
 
     steps:
     - uses: actions/checkout@v2
     - name: Docker image
-      uses: docker://auchida/ubuntu-sshd
+      uses: docker://rastasheep/ubuntu-sshd
     - name: Before deploy
       env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}

@@ -34,7 +34,7 @@ export class Server {
         this.application = restify.createServer(options)
 
         const corsOptions: corsmiddleware.Options = {
-          preflightMaxAge: 10,
+          preflightMaxAge: 86400, //tempo de aceitação do preflight
           origins: ['*'], // caso seja somente certas origens, colocar urls aqui
           allowHeaders: ['authorization'],
           exposeHeaders: ['x-custem-header']

@@ -3,8 +3,6 @@ name: Docker Image CI
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
 
@@ -45,7 +43,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Docker image
-      uses: docker://rastasheep/ubuntu-sshd:14.04
+      uses: docker://auchida/ubuntu-sshd
     - name: Before deploy
       env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}

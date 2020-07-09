@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         node-version: [12]
-        mongodb-version: [4.2]
+        mongodb-version: [4.0,4.2]
 
     steps:
     - uses: actions/checkout@v2
@@ -41,4 +41,4 @@ jobs:
     - run: npm test
       env:
         SERVER_PORT: 3001
-        DB_URL: "mongodb://mongodb/meatapi"
+        DB_URL: "mongodb://mongo/meatapi"

@@ -29,6 +29,8 @@ jobs:
     services:
       mongodb:
        image: mongo:4.2.8
+       volumes:
+        - ./data:/data/db
        ports:
         - 27017:27017
     env:

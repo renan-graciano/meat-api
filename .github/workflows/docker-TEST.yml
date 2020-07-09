@@ -25,14 +25,15 @@ jobs:
           **/node_modules
         key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
     - run: npm install
+    - name: Run `npm run compile` to compile Typescript into Javascript
+      run: npm run compile
     - run: npm test
     services:
       mongodb:
        image: mongo
-       volumes:
-        - ./data:/data/db
        ports:
         - 27017:27017
     env:
+      CI: true
       SERVER_PORT: 3001
       DB_URL: "mongodb://mongo/meatapi"

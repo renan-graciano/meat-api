@@ -1,0 +1,28 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Docker image
+      uses: docker://beevelop/nodejs-python
+    - run: npm install
+    - run: npm test
+    services:
+      mongodb:
+       image: mongo:4.2.8
+       ports:
+        - 27017:27017
+    env:
+      SERVER_PORT: 3001
+      DB_URL: "mongodb://mongo/meatapi"

@@ -6,33 +6,33 @@ on:
 
 jobs:
 
-  test:
-
-    runs-on: ubuntu-16.04
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Docker image
-      uses: docker://beevelop/nodejs-python
-    - name: Cache multiple paths
-      uses: actions/cache@v2
-      with:
-        path: |
-          ~/cache
-          !~/cache/exclude
-          **/node_modules
-        key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
-    - run: npm install
-    - run: npm test
-    services:
-      mongodb:
-       image: mongo
-       ports:
-        - 27017:27017
-    env:
-      CI: true
-      SERVER_PORT: 3001
-      DB_URL: "mongodb://localhost/meatapi"
+#  test:
+#
+#    runs-on: ubuntu-16.04
+#
+#    steps:
+#    - uses: actions/checkout@v2
+#    - name: Docker image
+#      uses: docker://beevelop/nodejs-python
+#    - name: Cache multiple paths
+#      uses: actions/cache@v2
+#      with:
+#        path: |
+#          ~/cache
+#          !~/cache/exclude
+#          **/node_modules
+#        key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+#    - run: npm install
+#    - run: npm test
+#    services:
+#      mongodb:
+#       image: mongo
+#       ports:
+#        - 27017:27017
+#    env:
+#      CI: true
+#      SERVER_PORT: 3001
+#      DB_URL: "mongodb://localhost/meatapi"
 
   deploy:
 
@@ -43,7 +43,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Docker image
-      uses: docker://rastasheep/ubuntu-sshd:16.04 
+      uses: docker://rastasheep/ubuntu-sshd
     - name: Before deploy
       env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}

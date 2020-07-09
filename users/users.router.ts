@@ -11,7 +11,7 @@ class UsersRouter extends ModelRouter<IUser>{
   constructor() {
     super(User)
     this.on('beforeRender', document => {
-      document.password = undefined
+      //document.password = undefined
     })
   }
 

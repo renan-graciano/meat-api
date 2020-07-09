@@ -25,43 +25,63 @@ test('teste get /reviews/aaaa', () => {
     })
   .catch(fail)
 })
-
+/* test('teste post /reviews', () => {
+  return request(address)
+    .post('/reviews')
+    .send({
+      date: '2018-02-02T20:20:20',
+      rating: 4,
+      comments: 'ok',
+      user: new mongoose.Types.ObjectId(),
+      restaurant: new mongoose.Types.ObjectId()
+    })
+    .then(response => {
+      expect(response.status).toBe(200)
+      expect(response.body._id).toBeDefined()
+      expect(response.body.rating).toBe(4)
+      expect(response.body.comments).toBe('ok')
+      expect(response.body.user).toBeDefined()
+      expect(response.body.restaurant).toBeDefined()
+    })
+    .catch(fail)
+}) */
 test('teste post /reviews', () => {
-  let user = mongoose.Types.ObjectId
-  let restaurant  = mongoose.Types.ObjectId
+  let userid = mongoose.Types.ObjectId
+  let restaurantid = mongoose.Types.ObjectId
   return request(address)
     .post('/users')
     .set('Authorization', auth)
     .send({
-        name: 'teste review post User',
-        email: 'testeReviewPostUser@email.com',
-        password: 'testeReviewPostUser',
+      name: 'teste review post User',
+      email: 'testeReviewPostUser@email.com',
+      password: 'testeReviewPostUser',
     })
     .then(response => {
-      user = response.body._id
+      userid = response.body._id
       request(address)
         .post('/restaurants')
+        .set('Authorization', auth)
         .send({
-        name:'test Review post restaurant'
+          name: 'test Review post restaurant'
         })
         .then(response => {
-          restaurant = response.body._id
+          restaurantid = response.body._id
           request(address)
-          .post('/reviews')
-        .send({
-          date: new Date(),
-          rating: 7,
-          comments: "Very nice!",
-          user: user,
-          restaurant: restaurant
-        }).then(response => {
-          expect(response.status).toBe(200)
-          expect(response.body._id).toBeDefined()
-          expect(response.body.rating).toBe(7)
-        })
+            .post('/reviews')
+            .set('Authorization', auth)
+            .send({
+              date: "2020-06-27T17:59:12",
+              rating: 7,
+              comments: "Very nice!",
+              user: userid,
+              restaurant: restaurantid
+            }).then(response => {
+              expect(response.status).toBe(200)
+              expect(response.body._id).toBeDefined()
+              expect(response.body.rating).toBe(7)
+            })
         })
         
     })
-   
-  .catch(fail)
+    .catch(fail)
 })

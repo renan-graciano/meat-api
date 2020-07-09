@@ -35,7 +35,8 @@ test('test post /restaurants', () => {
     }).then(response => {
       expect(response.status).toBe(200)
       expect(response.body._id).toBeDefined()  
-  })
+    })
+    .catch(fail)
 })
 
 test('teste post menu restaurant /restaurant/:id/menu', () => {
@@ -55,6 +56,7 @@ test('teste post menu restaurant /restaurant/:id/menu', () => {
     .then(response => {
       expect(response.status).toBe(200)
     })
+    .catch(fail)
 })
 
 test('teste get menu restaurant /restaurant/:id/menu', () => {
@@ -63,23 +65,23 @@ test('teste get menu restaurant /restaurant/:id/menu', () => {
     .post('/restaurants')
     .set('Authorization', auth)
     .send({
-    name:'test get menu restaurant'
+      name: 'test get menu restaurant'
     })
     .then(response => {
       rest = response.body._id
       request(address)
         .put(`/restaurants/${rest}/menu`)
-        .set('Authorization', auth)  
-      .send({
-        name: 'test get menu restaurant 1',
-        price: 11
-        })  
-        .then(response => request(address)  
-          .get(`/restaurants/${rest}/menu`)
-      )
-      .then(response => {
-        expect(response.status).toBe(200)
-        expect(response.body.items).toBeInstanceOf(Array)  
+        .set('Authorization', auth)
+        .send({
+          name: 'test get menu restaurant 1',
+          price: 11
         })
-    })  
+        .then(response => request(address)
+          .get(`/restaurants/${rest}/menu`)
+        )
+        .then(response => {
+          expect(response.status).toBe(200)
+          expect(response.body).toBeInstanceOf(Array)
+        })
+    })
 })

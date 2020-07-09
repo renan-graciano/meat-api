@@ -54,7 +54,7 @@
     "@types/jest": "^26.0.3",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/mongoose": "4.7.32",
-    "@types/restify": "5.0.6",
+    "@types/restify": "5.0.11",
     "@types/restify-errors": "^4.3.3",
     "@types/supertest": "^2.0.9",
     "jest": "^26.1.0",

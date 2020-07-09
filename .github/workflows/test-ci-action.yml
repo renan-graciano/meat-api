@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x]
+        node-version: [12]
 
     steps:
     - uses: actions/checkout@v2
@@ -24,10 +24,19 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Start Docker for Mongodb
-      run: docker run -d -p 27017:27017 mongo
-    - run: npm ci
+    - name: Cache multiple paths
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/cache
+          !~/cache/exclude
+          **/node_modules
+        key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+    - name: Create mongoDB Docker container for API testing
+      uses: DigiPie/mongo-action@v1.0.0
+    - run: npm install
     - run: npm test
       env:
+        CI: true
         SERVER_PORT: 3001
-        DB_URL: "mongodb://mongo/meatapi"
+        DB_URL: "mongodb://localhost/meatapi"

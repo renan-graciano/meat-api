@@ -43,7 +43,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Docker image
-      uses: docker://cyd01/sshd-ubuntu
+      uses: docker://rastasheep/ubuntu-sshd:16.04 
     - name: Before deploy
       env:
         DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
